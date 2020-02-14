@@ -1,2 +1,2 @@
 # Project-01
-Tomcat8_Setup_on_Ubuntu18
+Comeplete DevOps project- Linux, Git, Jenkins, Maven, Ansible, Docker, AWS
