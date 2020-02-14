@@ -1,0 +1,75 @@
+Tomcat8 on ubuntu18 by valaxy 
+--------------------------------------------------
+
+    1  apt update
+    2  apt install java-1.8*
+    3  sudo apt install default-jdk
+    4  pwd
+    5  cd /opt
+    6  ls
+    7  apt install wget
+    8  wget http://apachemirror.wuchna.com/tomcat/tomcat-8/v8.5.51/bin/apache-tomcat-8.5.51.tar.gz
+    9  ls
+   10  tar -zvxf
+   11  ls
+   12  tar -zvxf apache-tomcat-8.5.51.tar.gz
+   13  ls
+   14  cd apache-tomcat-8.5.51/
+   15  ls
+   16  cd bin
+   17  ls
+   18  chmod +x startup.sh      ##{any user can start}
+   19  chmod +x shutdown.sh      ##{any user can stop}
+
+   ##  {note:- to run this file you have to come to bin location}
+   20  pwd
+   21  echo $PATH
+   22  ln -s /opt/apache-tomcat-8.5.51/bin//startup.sh /usr/local/bin/tomcatup      ##{by giving tomcatup , u can start the service from anywahere}
+   22  ln -s /opt/apache-tomcat-8.5.51/bin//shutdown.sh /usr/local/bin/tomcatdown      ##{by giving tomcatdown , u can shutdown the service from anywahere}
+   22  ps -ef | grep tomcat
+   23  ##{hit the url with IpAdd:8080} 
+
+##{Senerio:- Now i want to change tomcat default port number from 8080 to 8090}}
+
+   24  cd ..
+   25  ls
+   26  cd conf
+   27  vi server.xml
+   28  connector port = 8090
+   29  :wq
+   
+   30  tomcatdown
+   31  tomcatup
+   ##  {hit the url IpAdd:8090}
+
+##{step:- to manageapp , we need to edit context.xml file}
+   
+   32  find / -name context.xml 
+   33  vi /opt/apache-tomcat-8.5.51/webapps/host-manager/META-INF/context.xml 
+   
+##{comment from value mentioned line <!-- value  to   -->}    
+
+   34  vi /opt/apache-tomcat-8.5.51/webapps/manager/META-INF/context.xml
+
+##{comment from value mentioned line <!-- value  to   -->} 
+
+   35  tomcatdown
+   35  tomcatup
+   35  refersh url   ##{it will ask the passwd}
+   36  ls
+   37  vi tomcat-user.xml
+   38  -->      ##{start from here & type the below commands}
+       <role rolename="manager-gui"/>
+       <role rolename="manager-script"/>
+       <role rolename="manager-jmx"/>
+       <role rolename="manager-status"/>
+       <user username="admin" psaaword="admin" roles="manager-gui, manager-script, manager-jmx, manager-status"/>
+       <user username="deployer" password="deployer" roles="manager-script"/>
+       <user username="tomcat" password="s3cret" roles="manager-gui"/>
+
+##{-->  ends up to here}
+    :wq
+
+   39 tomcatdown
+   40 tomcatup
+   41 Give the username & password
