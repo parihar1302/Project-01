@@ -1,0 +1,82 @@
+# tomcat 8 on ubuntu 18.04            https://websiteforstudents.com/setup-apache-tomcat-8-8-5-on-ubuntu-16-04-18-04-lts/
+
+----------------------------------------------------------------------
+
+# sudo apt update
+
+# sudo apt install default-jdk       ##{install java}
+
+# sudo groupadd tomcat       ##{creating group}
+
+# sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat      ##{creating user and adding into the group}
+
+# cd /tmp
+
+# http://apachemirror.wuchna.com/tomcat/tomcat-8/v8.5.51/bin/apache-tomcat-8.5.51.tar.gz      ##{download from official site}
+
+# sudo mkdir /opt/tomcat    ##{creating a directory}
+
+# sudo tar xzvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1        ##{exract the file}
+
+# sudo chown -R tomcat: /opt/tomcat     ##{give ermission to tomcat user}
+
+# sudo sh -c 'chmod +x /opt/tomcat/bin/*.sh'      ##{moving directory to bin folder}
+
+# sudo nano /opt/tomcat/conf/tomcat-users.xml       ##{opn tomcat configuration file for default user}
+
+<role rolename="manager-gui"/>
+<role rolename="admin-gui"/>
+<user username="admin" password="type_new_password_here" roles="manager-gui,admin-gui"/>
+
+:wq
+
+# sudo nano /etc/systemd/system/tomcat.service      ##{create server account  for tomcat}
+
+##{note:- then copy and paste the lines below into the file and save}
+
+[Unit]
+Description=Tomcat servlet container
+After=network.target
+
+[Service]
+Type=forking
+
+User=tomcat
+Group=tomcat
+
+Environment="JAVA_HOME=/usr/lib/jvm/default-java"
+Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom"
+
+Environment="CATALINA_BASE=/opt/tomcat"
+Environment="CATALINA_HOME=/opt/tomcat"
+Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
+Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+
+[Install]
+WantedBy=multi-user.target
+
+
+:wq
+
+
+# sudo systemctl daemon-reload         ##{reload the tomcat service}
+
+# sudo systemctl start tomcat.service     ##{start the service}
+
+# sudo systemctl enable tomcat.service        ##{enabling the service}
+
+# sudo systemctl status tomcat.service        ##{chk it's running or not}
+
+# http://localhost:8080        ##{url on browser}
+
+
+
+
+    
+
+
+
+
